@@ -3,33 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo Uygulaması</title>
+  <title>Yapılacaklar</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Yapılacaklar</h1>
-      <p class="date" id="currentDate"></p>
-    </header>
 
-    <div class="input-area">
-      <input type="text" id="todoInput" placeholder="Yeni görev ekle..." maxlength="100">
-      <button id="addBtn">Ekle</button>
+  <!-- Auth Ekranı -->
+  <div class="screen" id="authScreen">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-icon">✓</div>
+        <h1>Yapılacaklar</h1>
+        <p>Görevlerini organize et, hayatını düzenle</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="tab-btn active" data-tab="login">Giriş Yap</button>
+        <button class="tab-btn" data-tab="register">Kayıt Ol</button>
+      </div>
+      <form id="authForm" novalidate>
+        <div class="form-group">
+          <label for="authEmail">E-posta</label>
+          <input type="email" id="authEmail" placeholder="ornek@eposta.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="authPassword">Şifre</label>
+          <div class="password-wrap">
+            <input type="password" id="authPassword" placeholder="En az 6 karakter" required minlength="6" autocomplete="current-password">
+            <button type="button" class="toggle-pw" id="togglePw" title="Şifreyi göster">👁</button>
+          </div>
+        </div>
+        <div id="authError" class="auth-message error hidden"></div>
+        <button type="submit" class="auth-submit" id="authSubmit">Giriş Yap</button>
+      </form>
     </div>
+  </div>
 
-    <div class="filters">
-      <button class="filter-btn active" data-filter="all">Tümü</button>
-      <button class="filter-btn" data-filter="active">Aktif</button>
-      <button class="filter-btn" data-filter="completed">Tamamlanan</button>
+  <!-- E-posta Onay Bekliyor Ekranı -->
+  <div class="screen hidden" id="confirmScreen">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-icon mail">✉</div>
+        <h1>E-postanızı Kontrol Edin</h1>
+        <p id="confirmSubtitle">Doğrulama bağlantısı gönderildi</p>
+      </div>
+      <div class="confirm-body">
+        <p>Hesabınızı etkinleştirmek için e-posta kutunuzdaki <strong>doğrulama bağlantısına</strong> tıklayın.</p>
+        <p class="hint">Spam / Gereksiz klasörünü de kontrol etmeyi unutmayın.</p>
+      </div>
+      <button class="auth-submit outline" id="backToLogin">← Giriş Sayfasına Dön</button>
     </div>
+  </div>
 
-    <ul id="todoList"></ul>
+  <!-- Ana Uygulama -->
+  <div class="screen hidden" id="appScreen">
+    <div class="container">
+      <header>
+        <div>
+          <h1>Yapılacaklar</h1>
+          <p class="date" id="currentDate"></p>
+        </div>
+        <div class="header-right">
+          <span class="user-badge" id="userBadge"></span>
+          <button class="logout-btn" id="logoutBtn">Çıkış</button>
+        </div>
+      </header>
 
-    <footer class="footer" id="footer">
-      <span id="remainingCount"></span>
-      <button id="clearCompleted">Tamamlananları Sil</button>
-    </footer>
+      <div class="input-area">
+        <input type="text" id="todoInput" placeholder="Yeni görev ekle..." maxlength="100">
+        <button id="addBtn">Ekle</button>
+      </div>
+
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">Tümü</button>
+        <button class="filter-btn" data-filter="active">Aktif</button>
+        <button class="filter-btn" data-filter="completed">Tamamlanan</button>
+      </div>
+
+      <ul id="todoList"></ul>
+
+      <footer class="footer hidden" id="footer">
+        <span id="remainingCount"></span>
+        <button id="clearCompleted">Tamamlananları Sil</button>
+      </footer>
+    </div>
   </div>
 
   <script src="app.js"></script>

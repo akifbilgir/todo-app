@@ -1,8 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,10 +10,178 @@ body {
   padding: 40px 16px;
 }
 
+/* ── SCREENS ── */
+.screen { width: 100%; display: flex; justify-content: center; }
+.screen.hidden { display: none; }
+
+/* ── AUTH CARD ── */
+.auth-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+}
+
+.auth-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40px 36px 36px;
+  text-align: center;
+  color: #fff;
+}
+
+.auth-icon {
+  width: 64px;
+  height: 64px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.auth-icon.mail { font-size: 26px; }
+
+.auth-header h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.5px; }
+.auth-header p  { font-size: 0.88rem; opacity: 0.85; margin-top: 6px; }
+
+/* Tabs */
+.auth-tabs {
+  display: flex;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 14px;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  color: #999;
+  cursor: pointer;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover { color: #667eea; }
+
+.tab-btn.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+/* Form */
+#authForm { padding: 28px 32px 32px; }
+
+.form-group { margin-bottom: 18px; }
+
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 2px solid #e8e8e8;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  color: #333;
+}
+
+.form-group input:focus { border-color: #667eea; }
+.form-group input.err    { border-color: #e74c3c; }
+
+.password-wrap { position: relative; }
+.password-wrap input { padding-right: 44px; }
+
+.toggle-pw {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.5;
+  padding: 4px;
+}
+
+.toggle-pw:hover { opacity: 1; }
+
+.auth-message {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.auth-message.error   { background: #ffeaea; color: #c0392b; border: 1px solid #f5c6c6; }
+.auth-message.success { background: #eafaf1; color: #27ae60; border: 1px solid #b8eacf; }
+.auth-message.hidden  { display: none; }
+
+.auth-submit {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.auth-submit:hover   { opacity: 0.92; }
+.auth-submit:active  { transform: scale(0.98); }
+.auth-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.auth-submit.outline {
+  background: transparent;
+  border: 2px solid #667eea;
+  color: #667eea;
+  margin: 0 32px 28px;
+  width: calc(100% - 64px);
+}
+
+/* Confirm screen body */
+.confirm-body {
+  padding: 28px 32px 20px;
+}
+
+.confirm-body p {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.confirm-body .hint {
+  font-size: 0.82rem;
+  color: #aaa;
+}
+
+/* ── MAIN APP ── */
 .container {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   width: 100%;
   max-width: 480px;
   overflow: hidden;
@@ -25,26 +189,54 @@ body {
 
 header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 28px 28px 24px;
+  padding: 24px 24px 20px;
   color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-header h1 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+header h1 { font-size: 1.5rem; font-weight: 700; }
+
+.date { font-size: 0.8rem; opacity: 0.8; margin-top: 3px; }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
-.date {
-  font-size: 0.85rem;
-  opacity: 0.8;
-  margin-top: 4px;
+.user-badge {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.18);
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: #fff;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
+.logout-btn {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.logout-btn:hover { background: rgba(255,255,255,0.25); }
 
 .input-area {
   display: flex;
   gap: 8px;
-  padding: 20px 24px;
+  padding: 18px 20px;
   border-bottom: 1px solid #f0f0f0;
 }
 
@@ -58,9 +250,7 @@ header h1 {
   transition: border-color 0.2s;
 }
 
-.input-area input:focus {
-  border-color: #667eea;
-}
+.input-area input:focus { border-color: #667eea; }
 
 .input-area button {
   padding: 10px 18px;
@@ -74,23 +264,18 @@ header h1 {
   transition: background 0.2s, transform 0.1s;
 }
 
-.input-area button:hover {
-  background: #5a6fd6;
-}
-
-.input-area button:active {
-  transform: scale(0.97);
-}
+.input-area button:hover   { background: #5a6fd6; }
+.input-area button:active  { transform: scale(0.97); }
 
 .filters {
   display: flex;
   gap: 4px;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border-bottom: 1px solid #f0f0f0;
 }
 
 .filter-btn {
-  padding: 6px 14px;
+  padding: 5px 14px;
   border: 1px solid #e0e0e0;
   background: transparent;
   border-radius: 20px;
@@ -100,21 +285,13 @@ header h1 {
   transition: all 0.2s;
 }
 
-.filter-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
-}
-
-.filter-btn.active {
-  background: #667eea;
-  border-color: #667eea;
-  color: #fff;
-}
+.filter-btn:hover          { border-color: #667eea; color: #667eea; }
+.filter-btn.active         { background: #667eea; border-color: #667eea; color: #fff; }
 
 #todoList {
   list-style: none;
   min-height: 60px;
-  max-height: 400px;
+  max-height: 380px;
   overflow-y: auto;
 }
 
@@ -131,7 +308,7 @@ header h1 {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 24px;
+  padding: 13px 20px;
   border-bottom: 1px solid #f5f5f5;
   transition: background 0.15s;
   animation: slideIn 0.2s ease;
@@ -142,9 +319,7 @@ header h1 {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.todo-item:hover {
-  background: #fafafa;
-}
+.todo-item:hover { background: #fafafa; }
 
 .todo-item.completed .todo-text {
   text-decoration: line-through;
@@ -164,9 +339,7 @@ header h1 {
   transition: all 0.2s;
 }
 
-.todo-check:hover {
-  border-color: #667eea;
-}
+.todo-check:hover { border-color: #667eea; }
 
 .todo-item.completed .todo-check {
   background: #667eea;
@@ -180,18 +353,13 @@ header h1 {
   font-weight: bold;
 }
 
-.todo-text {
-  flex: 1;
-  font-size: 0.95rem;
-  color: #333;
-  word-break: break-word;
-}
+.todo-text { flex: 1; font-size: 0.95rem; color: #333; word-break: break-word; }
 
 .todo-delete {
   background: none;
   border: none;
   color: #ccc;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
   padding: 2px 6px;
   border-radius: 4px;
@@ -199,28 +367,20 @@ header h1 {
   opacity: 0;
 }
 
-.todo-item:hover .todo-delete {
-  opacity: 1;
-}
-
-.todo-delete:hover {
-  color: #e74c3c;
-  background: #ffeaea;
-}
+.todo-item:hover .todo-delete { opacity: 1; }
+.todo-delete:hover { color: #e74c3c; background: #ffeaea; }
 
 .footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 24px;
+  padding: 12px 20px;
   border-top: 1px solid #f0f0f0;
   background: #fafafa;
 }
 
-.footer span {
-  font-size: 0.82rem;
-  color: #888;
-}
+.footer span        { font-size: 0.82rem; color: #888; }
+.footer.hidden      { display: none; }
 
 #clearCompleted {
   background: none;
@@ -231,10 +391,4 @@ header h1 {
   transition: color 0.2s;
 }
 
-#clearCompleted:hover {
-  color: #e74c3c;
-}
-
-.footer.hidden {
-  display: none;
-}
+#clearCompleted:hover { color: #e74c3c; }
