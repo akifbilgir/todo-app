@@ -1,3 +1,13 @@
+const SUPABASE_URL = 'https://kdefjzcrruabjcevhgmr.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZWZqemNycnVhYmpjZXZoZ21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3ODUwMjYsImV4cCI6MjA5MjM2MTAyNn0.7WMUaZ1bYTQMjTAMpW0jol5BzUmEHk38xkOe3-RvG1o';
+const API = `${SUPABASE_URL}/rest/v1/todos`;
+const HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SUPABASE_ANON_KEY,
+  'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+  'Prefer': 'return=representation'
+};
+
 const todoInput = document.getElementById('todoInput');
 const addBtn = document.getElementById('addBtn');
 const todoList = document.getElementById('todoList');
@@ -6,12 +16,8 @@ const remainingCount = document.getElementById('remainingCount');
 const clearCompleted = document.getElementById('clearCompleted');
 const footer = document.getElementById('footer');
 
-let todos = JSON.parse(localStorage.getItem('todos')) || [];
+let todos = [];
 let currentFilter = 'all';
-
-function save() {
-  localStorage.setItem('todos', JSON.stringify(todos));
-}
 
 function formatDate() {
   const days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
@@ -22,6 +28,58 @@ function formatDate() {
 }
 
 document.getElementById('currentDate').textContent = formatDate();
+
+async function fetchTodos() {
+  setLoading(true);
+  const res = await fetch(`${API}?order=created_at.desc`, { headers: HEADERS });
+  todos = await res.json();
+  render();
+  setLoading(false);
+}
+
+async function addTodo() {
+  const text = todoInput.value.trim();
+  if (!text) return;
+  todoInput.value = '';
+  const res = await fetch(API, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({ text, completed: false })
+  });
+  const [newTodo] = await res.json();
+  todos.unshift(newTodo);
+  render();
+}
+
+async function toggle(id) {
+  const todo = todos.find(t => t.id === id);
+  const res = await fetch(`${API}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: HEADERS,
+    body: JSON.stringify({ completed: !todo.completed })
+  });
+  const [updated] = await res.json();
+  todos = todos.map(t => t.id === id ? updated : t);
+  render();
+}
+
+async function remove(id) {
+  await fetch(`${API}?id=eq.${id}`, { method: 'DELETE', headers: HEADERS });
+  todos = todos.filter(t => t.id !== id);
+  render();
+}
+
+async function removeCompleted() {
+  const ids = todos.filter(t => t.completed).map(t => t.id);
+  if (!ids.length) return;
+  await fetch(`${API}?id=in.(${ids.join(',')})`, { method: 'DELETE', headers: HEADERS });
+  todos = todos.filter(t => !t.completed);
+  render();
+}
+
+function setLoading(on) {
+  todoList.style.opacity = on ? '0.5' : '1';
+}
 
 function render() {
   const filtered = todos.filter(t => {
@@ -35,7 +93,6 @@ function render() {
   filtered.forEach(todo => {
     const li = document.createElement('li');
     li.className = `todo-item${todo.completed ? ' completed' : ''}`;
-    li.dataset.id = todo.id;
 
     li.innerHTML = `
       <div class="todo-check"></div>
@@ -60,28 +117,6 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-function addTodo() {
-  const text = todoInput.value.trim();
-  if (!text) return;
-  todos.unshift({ id: Date.now(), text, completed: false });
-  todoInput.value = '';
-  save();
-  render();
-}
-
-function toggle(id) {
-  const todo = todos.find(t => t.id === id);
-  if (todo) todo.completed = !todo.completed;
-  save();
-  render();
-}
-
-function remove(id) {
-  todos = todos.filter(t => t.id !== id);
-  save();
-  render();
-}
-
 addBtn.addEventListener('click', addTodo);
 todoInput.addEventListener('keydown', e => { if (e.key === 'Enter') addTodo(); });
 
@@ -94,10 +129,6 @@ filterBtns.forEach(btn => {
   });
 });
 
-clearCompleted.addEventListener('click', () => {
-  todos = todos.filter(t => !t.completed);
-  save();
-  render();
-});
+clearCompleted.addEventListener('click', removeCompleted);
 
-render();
+fetchTodos();
